@@ -1,0 +1,60 @@
+class tuple{
+    int first,second,third;
+    tuple(int first,int second,int third){
+        this.first=first;  // element
+        this.second=second; // idx
+        this.third=third;  //  listNumber
+    }
+}
+
+
+class Solution {
+    public int[] smallestRange(List<List<Integer>> nums) {
+        int k=nums.size();
+        int range[]={-100000,100000};
+
+        PriorityQueue<tuple> pq=new PriorityQueue<>((a,b)->Integer.compare(a.first,b.first));
+        int mx=Integer.MIN_VALUE;
+        for(int i=0;i<k;i++){
+            int el=nums.get(i).get(0);
+            if(el>mx){
+                mx=el;
+            }
+            pq.add(new tuple(el,0,i));
+        }
+
+        while(!pq.isEmpty()){
+            tuple it=pq.poll();
+            int el=it.first;
+            int idx=it.second;
+            int listNo=it.third;
+
+
+              if(mx-el<range[1]-range[0]){
+                range[1]=mx;
+                range[0]=el;
+            }
+           
+
+            if(idx+1>=nums.get(listNo).size()){
+                break;
+            }
+            else{
+                int nextel=nums.get(listNo).get(idx+1);
+                if(nextel>mx){
+                    mx=nextel;
+                }
+                pq.add(new tuple(nextel,idx+1,listNo));
+            }
+
+           
+
+
+
+
+        }
+        return range;
+
+        
+    }
+}
